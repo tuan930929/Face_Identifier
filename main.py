@@ -1,38 +1,58 @@
 import sys
-from PyQt4 import QtGui
+from PyQt4 import QtGui,QtCore
 
-class Example(QtGui.QWidget):
+class MainScreen(QtGui.QWidget):
     
     def __init__(self):
-        super(Example, self).__init__()
+        super(MainScreen, self).__init__()
         
         self.initUI()
         
     def initUI(self):
         
         trainingButton = QtGui.QPushButton("Training")
+        # trainingButton.clicked.connect(self.training)
         detectButton = QtGui.QPushButton("Detect")
-        quitButton = QtGui.QPushButton("Quit")
+
+        picture = QtGui.QLabel(self)
+        picture.move(15, 10)
+        pixmap = QtGui.QPixmap("timekeeper.png")
+        pixmap1 = pixmap.scaled(480, 450)
+        picture.setPixmap(pixmap1)
+        picture.show()
 
         hbox = QtGui.QHBoxLayout()
         hbox.addWidget(trainingButton)
         hbox.addWidget(detectButton)
-        hbox.addWidget(quitButton)
 
         vbox = QtGui.QVBoxLayout()
+        vbox.addStretch(1)
         vbox.addLayout(hbox)
         
         self.setLayout(vbox)    
         
-        self.setFixedSize(500,50)
-        self.move(300,300)
+        self.setFixedSize(500,500)
+        self.move(600,100)
         self.setWindowTitle('Timekeeper by Face Application')    
         self.show()
+    def closeEvent(self, event):
         
+        reply = QtGui.QMessageBox.question(self, 'Message',
+            "Are you sure to quit?", QtGui.QMessageBox.Yes | 
+            QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+
+        if reply == QtGui.QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()  
+    
+    # def training():
+    	
+
 def main():
     
     app = QtGui.QApplication(sys.argv)
-    ex = Example()
+    ex = MainScreen()
     sys.exit(app.exec_())
 
 
